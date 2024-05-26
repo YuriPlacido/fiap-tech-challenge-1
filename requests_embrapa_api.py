@@ -7,7 +7,7 @@ app = FastAPI()
 
 @app.post("/embrapa_producao/")
 def extracao_producao_ano(ano):
-    response = requests.get('http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao=opt_02')
+    response = requests.get('http://vitibrasil.cnpuv.embrapa.br/index.php?ano={ano}&opcao={opcao}')
 
     soup = BeautifulSoup(response.content, 'html.parser')
 
