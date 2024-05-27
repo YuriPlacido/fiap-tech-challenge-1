@@ -3,7 +3,7 @@ from pydantic import BaseModel
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from typing import Optional
+from typing import Optional, List, Dict, Any
 
 app = FastAPI()
 
@@ -11,6 +11,36 @@ class QueryParams(BaseModel):
     ano: Optional[int] = Query(None, description="Ano para filtrar os dados")
     opcao: str = Query(..., description="Opção principal para a URL")
     subopcao: Optional[str] = Query(None, description="Subopção para filtrar os dados")
+
+def parse_table(table) -> List[Dict[str, Any]]:
+    data = []
+    current_category = None
+    current_subcategory = None
+
+    for row in table.find_all('tr'):
+        columns = row.find_all('td')
+        if len(columns) == 1:
+            # This is a category or subcategory row
+            text = columns[0].get_text(strip=True)
+            if text.isupper():
+                current_category = text
+                current_subcategory = None
+            else:
+                current_subcategory = text
+        elif len(columns) > 1:
+            # This is a data row
+            product = columns[0].get_text(strip=True)
+            quantity = columns[1].get_text(strip=True)
+            entry = {
+                "Produto": product,
+                "Quantidade (L.)": quantity,
+            }
+            if current_subcategory:
+                entry["Subcategoria"] = current_subcategory
+            if current_category:
+                entry["Categoria"] = current_category
+            data.append(entry)
+    return data
 
 @app.post("/embrapa_producao/")
 def extracao_producao(params: QueryParams):
@@ -33,20 +63,6 @@ def extracao_producao(params: QueryParams):
     if table is None:
         return {"message": "No data found for the given parameters"}
     
-    products = []
-    quantities = []
+    data = parse_table(table)
     
-    for row in table.find_all('tr'):
-        columns = row.find_all('td')
-        if len(columns) > 1:  
-            product = columns[0].get_text(strip=True)
-            quantity = columns[1].get_text(strip=True)
-            products.append(product)
-            quantities.append(quantity)
-    
-    df = pd.DataFrame({
-        'Produto': products,
-        'Quantidade (L.)': quantities
-    })
-    
-    return {"message": df.to_dict("records")}
+    return {"message": data}
