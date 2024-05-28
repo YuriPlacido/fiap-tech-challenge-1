@@ -1,9 +1,16 @@
 # Embrapa Data Extraction API
 
-## Descrição
-API para extração de dados de produção e processamento da Embrapa, construída com FastAPI.
+## Descrição do Projeto
 
+Este projeto tem como objetivo desenvolver uma API para extração de dados de produção e processamento de vitivinicultura da Embrapa. Utilizando a tecnologia FastAPI, a API permite acessar dados detalhados e organizados, facilitando análises e integração com outros sistemas. A API oferece endpoints para extrair dados de produção e processamento a partir de arquivos CSV disponíveis no site da Embrapa.
+
+### Participantes
+
+- **Nome do Participante 1**: Renato Rocha - renatorocha1209@gmail.com
+- **Nome do Participante 2**: Yuri Oliveira - yuri.placido98@gmail.com
+  
 ## Estrutura do Projeto
+
 fiap-tech-challenge-1/ <br />
 ├── .gitignore <br />
 ├── README.md <br />
@@ -108,3 +115,12 @@ fiap-tech-challenge-1/ <br />
 - [Uvicorn](https://www.uvicorn.org/)
 - [Beautiful Soup](https://beautiful-soup-4.readthedocs.io/en/latest/)
 - [Pandas](https://pandas.pydata.org/)
+
+## Link Compartilhável
+
+A API pode ser acessada no seguinte link: https://sua-api-no-render.com
+
+### Conclusão
+
+Com essa descrição resumida, você tem um propósito claro para o projeto, incluindo os participantes, que demonstra a aplicação prática e a utilidade da API desenvolvida.
+
